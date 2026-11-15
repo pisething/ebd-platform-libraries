@@ -1,0 +1,83 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-outbox-event-table
+      author: pisethjavaschool
+      changes:
+        - createTable:
+            tableName: outbox_event
+            columns:
+              - column:
+                  name: event_id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: topic
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: partition_key
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payload
+                  type: jsonb
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(16)
+                  defaultValue: PENDING
+                  constraints:
+                    nullable: false
+              - column:
+                  name: attempts
+                  type: integer
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: claim_token
+                  type: uuid
+              - column:
+                  name: leased_until
+                  type: timestamp with time zone
+              - column:
+                  name: next_attempt_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: published_at
+                  type: timestamp with time zone
+        - createIndex:
+            tableName: outbox_event
+            indexName: idx_outbox_status_next_attempt
+            columns:
+              - column:
+                  name: status
+              - column:
+                  name: next_attempt_at
+              - column:
+                  name: created_at
+              - column:
+                  name: event_id
+        - createIndex:
+            tableName: outbox_event
+            indexName: idx_outbox_status_lease
+            columns:
+              - column:
+                  name: status
+              - column:
+                  name: leased_until

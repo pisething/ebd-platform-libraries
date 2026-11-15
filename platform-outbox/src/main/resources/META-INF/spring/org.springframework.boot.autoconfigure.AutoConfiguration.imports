@@ -1,0 +1,3 @@
+com.pisethjavaschool.platform.outbox.autoconfigure.OutboxAutoConfiguration
+
+com.pisethjavaschool.platform.outbox.autoconfigure.OutboxRelayAutoConfiguration
