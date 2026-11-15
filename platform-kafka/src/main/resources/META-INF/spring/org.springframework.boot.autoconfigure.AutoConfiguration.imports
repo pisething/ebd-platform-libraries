@@ -1,0 +1,3 @@
+com.pisethjavaschool.platform.kafka.autoconfigure.PlatformKafkaAutoConfiguration
+
+com.pisethjavaschool.platform.kafka.autoconfigure.RegistrationKafkaTopicAutoConfiguration
